@@ -1,24 +1,24 @@
 package log
 
 import (
-    "os"
+	"os"
 
-    "go.uber.org/zap"
-    "go.uber.org/zap/zapcore"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 var Logger *zap.Logger
 
 func InitLogger() {
-    encoderCfg := zap.NewProductionEncoderConfig()
-    encoderCfg.EncodeTime = zapcore.ISO8601TimeEncoder
-    encoderCfg.EncodeLevel = zapcore.LowercaseLevelEncoder
+	encoderCfg := zap.NewProductionEncoderConfig()
+	encoderCfg.EncodeTime = zapcore.ISO8601TimeEncoder
+	encoderCfg.EncodeLevel = zapcore.LowercaseLevelEncoder
 
-    core := zapcore.NewCore(
-        zapcore.NewJSONEncoder(encoderCfg),
-        zapcore.AddSync(os.Stdout),
-        zap.InfoLevel,
-    )
+	core := zapcore.NewCore(
+		zapcore.NewJSONEncoder(encoderCfg),
+		zapcore.AddSync(os.Stdout),
+		zap.InfoLevel,
+	)
 
-    Logger = zap.New(core, zap.AddCaller())
+	Logger = zap.New(core, zap.AddCaller())
 }

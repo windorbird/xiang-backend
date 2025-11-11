@@ -27,7 +27,7 @@ func InitDouyinRouter(api *gin.RouterGroup) {
     douyinGroup := api.Group("/douyin")
     {
         douyinGroup.GET("/login", middleware.Wrap(douyin.LoginHandler))
-        //douyinGroup.POST("/check-text", douyin.CheckTextHandler)
+        douyinGroup.POST("/check-text", middleware.Wrap(douyin.CheckText))
     }
     // 可以在这里添加更多抖音小程序的路由
     //douyinGroup.GET("/user/info", getUserInfo)

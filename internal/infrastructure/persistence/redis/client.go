@@ -24,11 +24,11 @@ type Config struct {
 }
 
 // InitRedis 初始化Redis客户端
-func InitRedis() {
+func InitRedis() error {
 	cfg, err := loadRedisConfig()
 	if err != nil {
 		log.Logger.Fatal("加载Redis配置失败", zap.Error(err))
-		return
+        return err
 	}
 	Client = redis.NewClient(&redis.Options{
 		Addr:     cfg.Addr,
@@ -42,14 +42,13 @@ func InitRedis() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
-	s, err := Client.Ping(ctx).Result()
+    _, err = Client.Ping(ctx).Result()
 	if err != nil {
 		log.Logger.Fatal("Redis连接失败", zap.Error(err))
-		return
+        return err
 	}
-	fmt.Println("s:", s)
-	fmt.Println("Redis连接成功")
 	log.Logger.Info("Redis连接成功", zap.String("addr", cfg.Addr), zap.Int("db", cfg.DB))
+    return nil
 }
 
 // LoadRedisConfig 从环境变量中加载并解析Redis配置

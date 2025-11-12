@@ -1,15 +1,20 @@
 package log
 
 import (
-	"os"
+    "os"
 
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
+    "go.uber.org/zap"
+    "go.uber.org/zap/zapcore"
 )
 
 var Logger *zap.Logger
 
 func InitLogger() {
+
+    if os.Getenv("ENV") != "prod" {
+        Logger, _ = zap.NewDevelopment()
+        return
+    }
 	encoderCfg := zap.NewProductionEncoderConfig()
 	encoderCfg.EncodeTime = zapcore.ISO8601TimeEncoder
 	encoderCfg.EncodeLevel = zapcore.LowercaseLevelEncoder

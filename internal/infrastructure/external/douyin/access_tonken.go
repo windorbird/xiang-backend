@@ -42,10 +42,9 @@ func GetAccessToken(ctx context.Context) (string, error) {
 }
 
 func SetAccessTokenToCache(ctx context.Context, accessToken string) error {
-	expiration := time.Hour * 2 // 2小时过期 todo:生产环境里设置为2小时
-	//expiration := time.Minute * 10 // 开发测试：10min过期
-	redisKey := redis.GetDouYinRedisKey("access_token")
-	return redis.Client.Set(ctx, redisKey, accessToken, time.Second*time.Duration(expiration)).Err() //todo:连接池
+    expiration := time.Hour * 2
+    redisKey := redis.GetDouYinRedisKey("access_token")
+    return redis.Client.Set(ctx, redisKey, accessToken, expiration).Err() //todo:连接池
 }
 
 func GetAccessTokenFromCache(ctx context.Context) (string, error) {
